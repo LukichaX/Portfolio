@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ლუკა ხირდაევი — Junior Software / QA Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+Georgian:wght@300;400;500;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #090d14;
+    --bg2: #0d1520;
+    --bg3: #111c2e;
+    --blue: #1a8fff;
+    --blue-glow: rgba(26,143,255,0.18);
+    --blue-dim: rgba(26,143,255,0.08);
+    --crimson: #e8173d;
+    --crimson-glow: rgba(232,23,61,0.18);
+    --text: #d4e0f0;
+    --text-dim: #6a829e;
+    --text-muted: #3a4d62;
+    --border: rgba(26,143,255,0.12);
+    --border-bright: rgba(26,143,255,0.3);
+    --card: rgba(13,21,32,0.9);
+    --font-display: 'Bebas Neue', cursive;
+    --font-body: 'Noto Sans Georgian', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--blue);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(26,143,255,0.5);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.12s ease;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content:'';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    background: linear-gradient(to bottom, rgba(9,13,20,0.95), transparent);
+    backdrop-filter: blur(4px);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    color: var(--blue);
+  }
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--blue); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0 10%;
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(26,143,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,143,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(26,143,255,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 4px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-tag::before {
+    content:'';
+    width: 40px; height: 1px;
+    background: var(--crimson);
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 7vw, 6.5rem);
+    line-height: 1;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .hero-headline .accent-blue { color: var(--blue); }
+  .hero-headline .accent-red { color: var(--crimson); }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    max-width: 580px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .hero-cta {
+    display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 14px 36px;
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 40px rgba(26,143,255,0.5);
+  }
+
+  .btn-ghost {
+    padding: 14px 36px;
+    border: 1px solid var(--border-bright);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-ghost:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    background: var(--blue-dim);
+  }
+
+  .hero-stats {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    z-index: 2;
+  }
+
+  .stat-item {
+    text-align: right;
+    border-right: 2px solid var(--blue);
+    padding-right: 20px;
+    opacity: 0;
+    animation: fadeRight 0.6s ease forwards;
+  }
+  .stat-item:nth-child(1) { animation-delay: 0.8s; }
+  .stat-item:nth-child(2) { animation-delay: 1.0s; }
+  .stat-item:nth-child(3) { animation-delay: 1.2s; }
+
+  .stat-val {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    color: var(--blue);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* SECTION WRAPPER */
+  section {
+    padding: 120px 10%;
+    position: relative;
+  }
+
+  .section-header {
+    margin-bottom: 70px;
+  }
+
+  .section-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 4px;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-kicker::after {
+    content:'';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--blue);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    letter-spacing: 2px;
+    color: #fff;
+    line-height: 1.05;
+  }
+
+  .section-desc {
+    margin-top: 16px;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    max-width: 600px;
+    font-weight: 300;
+  }
+
+  /* SEPARATOR */
+  .sep {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-bright), transparent);
+    margin: 0 10%;
+    width: 80%;
+  }
+
+  /* ===== FAST LEARNER SECTION ===== */
+  #fast-learner {
+    background: var(--bg2);
+  }
+
+  .fl-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .fl-card {
+    padding: 52px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .fl-card:hover { background: var(--bg3); }
+
+  .fl-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .fl-card.world-labor::before { background: linear-gradient(to right, var(--crimson), transparent); }
+  .fl-card.world-tech::before { background: linear-gradient(to right, var(--blue), transparent); }
+
+  .fl-icon {
+    font-size: 2.8rem;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .fl-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .fl-card.world-labor .fl-label { color: var(--crimson); }
+  .fl-card.world-tech .fl-label { color: var(--blue); }
+
+  .fl-card h3 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .fl-card p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    font-weight: 300;
+  }
+
+  .fl-badge {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 6px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .fl-card.world-labor .fl-badge {
+    border-color: var(--crimson);
+    color: var(--crimson);
+  }
+  .fl-card.world-tech .fl-badge {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  .fl-bridge {
+    grid-column: 1 / -1;
+    padding: 52px;
+    background: linear-gradient(135deg, rgba(26,143,255,0.06) 0%, rgba(232,23,61,0.06) 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 60px;
+  }
+
+  .fl-bridge-icon {
+    font-size: 4rem;
+    flex-shrink: 0;
+  }
+
+  .fl-bridge h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .fl-bridge p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    font-weight: 300;
+  }
+
+  .quote-bar {
+    border-left: 3px solid var(--crimson);
+    padding-left: 20px;
+    margin-top: 24px;
+    font-style: italic;
+    color: var(--text);
+    font-size: 0.92rem;
+  }
+
+  /* ===== ACADEMIC ===== */
+  #academic {
+    position: relative;
+  }
+
+  .academic-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .gpa-display {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .gpa-ring-wrapper {
+    position: relative;
+    width: 240px; height: 240px;
+  }
+
+  .gpa-ring-wrapper svg {
+    transform: rotate(-90deg);
+  }
+
+  .gpa-center-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .gpa-num {
+    font-family: var(--font-display);
+    font-size: 3.4rem;
+    color: var(--blue);
+    line-height: 1;
+  }
+  .gpa-denom {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .gpa-badges {
+    display: flex; flex-direction: column; gap: 14px; width: 100%;
+  }
+
+  .gpa-badge-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .gpa-badge-item::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--blue);
+  }
+
+  .gba-label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+  .gba-val {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .skill-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .skill-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .skill-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+
+  .skill-level {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+
+  .gauge-track {
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 0;
+    position: relative;
+    overflow: visible;
+  }
+
+  .gauge-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--blue), #0cf);
+    position: relative;
+    width: 0;
+    transition: width 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .gauge-fill.red {
+    background: linear-gradient(to right, var(--crimson), #ff6b8a);
+  }
+
+  .gauge-fill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translate(50%, -50%);
+    width: 10px; height: 10px;
+    background: var(--blue);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--blue);
+  }
+  .gauge-fill.red::after { background: var(--crimson); box-shadow: 0 0 10px var(--crimson); }
+
+  .gauge-ticks {
+    display: flex; justify-content: space-between;
+    margin-top: 5px;
+  }
+  .gauge-tick {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-muted);
+  }
+
+  /* ===== PORTFOLIO CARDS ===== */
+  #portfolio {
+    background: var(--bg2);
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .port-card {
+    background: var(--card);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .port-card:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-4px);
+  }
+
+  .port-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--blue), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .port-card:hover::before { opacity: 1; }
+
+  .port-card.crimson-top::before { background: linear-gradient(to right, var(--crimson), transparent); }
+  .port-card.both-top::before { background: linear-gradient(to right, var(--blue), var(--crimson)); }
+
+  .port-num {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    color: rgba(26,143,255,0.08);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .port-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 14px;
+  }
+  .port-card.crimson-top .port-tag { color: var(--crimson); }
+
+  .port-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .port-card p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.85;
+    font-weight: 300;
+    margin-bottom: 28px;
+  }
+
+  .port-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+
+  .tag {
+    padding: 4px 12px;
+    background: rgba(26,143,255,0.08);
+    border: 1px solid rgba(26,143,255,0.15);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    color: var(--blue);
+  }
+  .tag.red { background: rgba(232,23,61,0.08); border-color: rgba(232,23,61,0.15); color: var(--crimson); }
+
+  /* ===== DRIVE / PERSONALITY ===== */
+  #drive {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .drive-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(232,23,61,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .drive-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .drive-content h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 2px;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+
+  .drive-content p {
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    line-height: 1.9;
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+
+  .drive-parallels {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .parallel-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: rgba(232,23,61,0.05);
+    border: 1px solid rgba(232,23,61,0.1);
+  }
+
+  .parallel-item .pi-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .parallel-item .pi-text { font-size: 0.82rem; color: var(--text); line-height: 1.5; }
+  .parallel-item .pi-text strong { color: var(--crimson); font-weight: 700; }
+
+  .drift-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .drift-stat {
+    padding: 28px 32px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .drift-stat::after {
+    content: '';
+    position: absolute;
+    right: -20px; bottom: -20px;
+    width: 80px; height: 80px;
+    border: 1px solid rgba(232,23,61,0.1);
+    border-radius: 50%;
+  }
+
+  .drift-stat-title {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 3px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .drift-stat-val {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+
+  /* ===== CONTACT ===== */
+  #contact {
+    background: var(--bg2);
+    text-align: center;
+  }
+
+  .contact-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .contact-inner p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 32px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+  }
+  .contact-link:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    background: var(--blue-dim);
+  }
+  .contact-link .cl-icon { font-size: 1.2rem; }
+
+  .footer-line {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SCANLINE */
+  .scanline {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, rgba(26,143,255,0.4), transparent);
+    animation: scan 4s linear infinite;
+    pointer-events: none;
+    z-index: 800;
+    opacity: 0.3;
+  }
+  @keyframes scan {
+    from { top: 0; }
+    to { top: 100vh; }
+  }
+
+  /* HERO ANIMATION */
+  .hero-content > * {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .hero-content .hero-tag { animation-delay: 0.2s; }
+  .hero-content .hero-headline { animation-delay: 0.4s; }
+  .hero-content .hero-sub { animation-delay: 0.6s; }
+  .hero-content .hero-cta { animation-delay: 0.8s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* TYPING CURSOR BLINK */
+  .blink {
+    animation: blink 1s step-end infinite;
+    color: var(--blue);
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* RESPONSIVE */
+  @media (max-width: 1000px) {
+    nav { padding: 20px 30px; }
+    .nav-links { gap: 20px; }
+    section { padding: 80px 6%; }
+    .hero-stats { display: none; }
+    .fl-grid { grid-template-columns: 1fr; }
+    .academic-layout { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .drive-layout { grid-template-columns: 1fr; }
+    .gpa-display { flex-direction: row; }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    section { padding: 60px 5%; }
+    .fl-card, .fl-bridge { padding: 36px 28px; }
+    .port-card { padding: 36px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LX</div>
+  <ul class="nav-links">
+    <li><a href="#fast-learner">სწრაფი ათვისება</a></li>
+    <li><a href="#academic">განათლება</a></li>
+    <li><a href="#portfolio">პროექტები</a></li>
+    <li><a href="#drive">ვნება</a></li>
+    <li><a href="#contact">კონტაქტი</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Junior Software / QA Developer</div>
+    <h1 class="hero-headline">
+      ლუკა<br>
+      <span class="accent-blue">ხირდაევი</span>
+    </h1>
+    <p style="font-family:var(--font-body); font-size:1.05rem; color:#8aa8c8; margin-bottom:8px; font-weight:400; letter-spacing:0.5px;">
+      სწრაფი ათვისება<span class="blink">_</span>
+    </p>
+    <p style="font-family:var(--font-body); font-size:1.05rem; color:#8aa8c8; margin-bottom:8px; font-weight:400; letter-spacing:0.5px;">
+      ლოგიკა<span class="blink" style="animation-delay:0.3s">_</span>
+    </p>
+    <p style="font-family:var(--font-body); font-size:1.05rem; color:var(--crimson); margin-bottom:32px; font-weight:600; letter-spacing:0.5px;">
+      ურყევი მონდომება<span class="blink" style="animation-delay:0.6s; color:var(--crimson)">_</span>
+    </p>
+    <p class="hero-sub">
+      IBSU-ს კომპიუტერული მეცნიერებების მე-3 კურსის სტუდენტი, 
+      რომელმაც ნებისმიერი საქმის — სარემონტო სამუშაოდან Dijkstra-ს ალგორითმამდე — 
+      ათვისება ერთ კვირაში გადააქცია ინსტინქტად.
+    </p>
+    <div class="hero-cta">
+      <a href="#portfolio" class="btn-primary">პროექტები</a>
+      <a href="#contact" class="btn-ghost">კონტაქტი</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-val">3.51</div>
+      <div class="stat-label">საერთო GPA</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">4.0</div>
+      <div class="stat-label">ბოლო სემესტრი</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">50%</div>
+      <div class="stat-label">სახელმწიფო გრანტი</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAST LEARNER -->
+<section id="fast-learner">
+  <div class="section-header reveal">
+    <div class="section-kicker">01 — სწრაფი ათვისება</div>
+    <h2 class="section-title">ორი სამყარო.<br>ერთი ლოგიკა.</h2>
+    <p class="section-desc">
+      ჩემი ყველაზე ძლიერი მხარე ერთი სიტყვით: ადაპტაცია. 
+      ეს არ არის ლოზუნგი — ეს დასაბუთებული, ცხოვრებით გამყარებული ფაქტია.
+    </p>
+  </div>
+
+  <div class="fl-grid reveal">
+    <div class="fl-card world-labor">
+      <span class="fl-icon">🔨</span>
+      <div class="fl-label">სამყარო 01 — ფიზიკური შრომა</div>
+      <h3>შპაკლი & შპალერი</h3>
+      <p>
+        ამჟამად ვაფინანსებ ჩემს გზას ხელით შრომით — სარემონტო სამუშაოებით. 
+        შპაკლი, შპალერის გაკვრა, კედლების მოსწორება. ეს საქმე, 
+        რომელსაც გამოცდილი ოსტატები წლებს ანდომებენ, 
+        მე ერთ კვირაში ვისწავლე.
+      </p>
+      <p style="margin-top:14px;">
+        ჩემი მამის სიტყვებით: <em style="color:var(--text);">„ბევრ სტაჟიან ხელოსანზე უკეთ აკეთებს."</em>
+      </p>
+      <span class="fl-badge">⏱ 1 კვირა — ოსტატის დონე</span>
+    </div>
+
+    <div class="fl-card world-tech">
+      <span class="fl-icon">⚡</span>
+      <div class="fl-label">სამყარო 02 — ტექნოლოგია</div>
+      <h3>კოდი & სისტემები</h3>
+      <p>
+        C++, Java, SQL, Selenium, Git — ეს ინსტრუმენტები ისე ვისწავლე, 
+        როგორც ყველაფერი სხვა: სიღრმისეული ჩაძირვით, სისტემის ლოგიკის გაგებით 
+        და დამოუკიდებელი პრაქტიკით. 
+      </p>
+      <p style="margin-top:14px;">
+        ლექტორმა მხოლოდ თეორია მისცა — მე Dijkstra-ს ალგორითმი 
+        C++-ში კოდში გადავიტანე ყოველგვარი დამატებითი რესურსის გარეშე.
+      </p>
+      <span class="fl-badge">⚡ ლოგიკა → კოდი</span>
+    </div>
+
+    <div class="fl-bridge">
+      <div class="fl-bridge-icon">🔗</div>
+      <div>
+        <h3>საიდუმლო? სისტემის ლოგიკა.</h3>
+        <p>
+          სარემონტო საქმეს თუ პროგრამირებას — ყველაფერს სისტემად ვხედავ. 
+          ჯერ ვიგებ ლოგიკას, შემდეგ ვადეკვატურ მოქმედებას ვირჩევ. 
+          ეს მიდგომა ზოგს წლებს ანდომებინებს, მე — დღეებს.
+        </p>
+        <div class="quote-bar">
+          „ჩემი მთავარი კოზირი ის კი არ არის, რომ ვიცი C++ ან Selenium — 
+          არამედ ის, რომ ნებისმიერ ახალ სიტუაციაში ვიცი, 
+          <strong>როგორ ვისწავლო.</strong>"
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACADEMIC -->
+<section id="academic">
+  <div class="section-header reveal">
+    <div class="section-kicker">02 — განათლება & უნარები</div>
+    <h2 class="section-title">აკადემიური<br>სიმძლავრე.</h2>
+  </div>
+
+  <div class="academic-layout">
+    <div class="gpa-display reveal">
+      <div class="gpa-ring-wrapper">
+        <svg width="240" height="240" viewBox="0 0 240 240">
+          <!-- Track -->
+          <circle cx="120" cy="120" r="100" fill="none" stroke="rgba(26,143,255,0.08)" stroke-width="12"/>
+          <!-- GPA 3.51 / 4.0 = 87.75% -->
+          <circle cx="120" cy="120" r="100" fill="none"
+            stroke="var(--blue)" stroke-width="12"
+            stroke-linecap="square"
+            stroke-dasharray="628"
+            stroke-dashoffset="76"
+            style="filter: drop-shadow(0 0 8px rgba(26,143,255,0.6)); transition: stroke-dashoffset 2s ease;"
+            id="gpaArc"/>
+          <!-- Last semester dot: 4.0 = 100% -->
+          <circle cx="120" cy="20" r="7" fill="var(--crimson)"
+            style="filter: drop-shadow(0 0 6px var(--crimson));"/>
+        </svg>
+        <div class="gpa-center-text">
+          <div class="gpa-num" id="gpaNum">3.51</div>
+          <div class="gpa-denom">GPA / 4.0</div>
+        </div>
+      </div>
+
+      <div class="gpa-badges" style="width:100%;">
+        <div class="gpa-badge-item">
+          <span class="gba-label">🎓 საერთო GPA</span>
+          <span class="gba-val">3.51 / 4.0</span>
+        </div>
+        <div class="gpa-badge-item" style="border-left-color: var(--crimson);">
+          <span class="gba-label">🔥 ბოლო სემესტრი</span>
+          <span class="gba-val" style="color:var(--crimson);">4.0 / 4.0</span>
+        </div>
+        <div class="gpa-badge-item">
+          <span class="gba-label">🏆 სასწავლო გრანტი</span>
+          <span class="gba-val">50% სახელმწიფო</span>
+        </div>
+        <div class="gpa-badge-item">
+          <span class="gba-label">📍 უნივერსიტეტი</span>
+          <span class="gba-val" style="font-size:0.8rem; color:var(--text-dim);">IBSU — მე-3 კურსი</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skills-grid reveal">
+
+      <div class="skill-row" data-fill="88">
+        <div class="skill-info">
+          <span class="skill-name">C++ & Java</span>
+          <span class="skill-level">Advanced</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style=""></div></div>
+        <div class="gauge-ticks"><span class="gauge-tick">0</span><span class="gauge-tick">25</span><span class="gauge-tick">50</span><span class="gauge-tick">75</span><span class="gauge-tick">100</span></div>
+      </div>
+
+      <div class="skill-row" data-fill="82">
+        <div class="skill-info">
+          <span class="skill-name">Test Automation (Selenium)</span>
+          <span class="skill-level">Proficient</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style=""></div></div>
+        <div class="gauge-ticks"><span class="gauge-tick">0</span><span class="gauge-tick">25</span><span class="gauge-tick">50</span><span class="gauge-tick">75</span><span class="gauge-tick">100</span></div>
+      </div>
+
+      <div class="skill-row" data-fill="79">
+        <div class="skill-info">
+          <span class="skill-name">SQL / Databases</span>
+          <span class="skill-level">Proficient</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style=""></div></div>
+        <div class="gauge-ticks"><span class="gauge-tick">0</span><span class="gauge-tick">25</span><span class="gauge-tick">50</span><span class="gauge-tick">75</span><span class="gauge-tick">100</span></div>
+      </div>
+
+      <div class="skill-row" data-fill="75">
+        <div class="skill-info">
+          <span class="skill-name">Networking</span>
+          <span class="skill-level">Solid Base</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style=""></div></div>
+        <div class="gauge-ticks"><span class="gauge-tick">0</span><span class="gauge-tick">25</span><span class="gauge-tick">50</span><span class="gauge-tick">75</span><span class="gauge-tick">100</span></div>
+      </div>
+
+      <div class="skill-row" data-fill="85">
+        <div class="skill-info">
+          <span class="skill-name">Hardware & Troubleshooting</span>
+          <span class="skill-level">Expert</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill red" style=""></div></div>
+        <div class="gauge-ticks"><span class="gauge-tick">0</span><span class="gauge-tick">25</span><span class="gauge-tick">50</span><span class="gauge-tick">75</span><span class="gauge-tick">100</span></div>
+      </div>
+
+      <div class="skill-row" data-fill="80">
+        <div class="skill-info">
+          <span class="skill-name">Git / GitHub</span>
+          <span class="skill-level">Proficient</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style=""></div></div>
+        <div class="gauge-ticks"><span class="gauge-tick">0</span><span class="gauge-tick">25</span><span class="gauge-tick">50</span><span class="gauge-tick">75</span><span class="gauge-tick">100</span></div>
+      </div>
+
+      <div class="skill-row" data-fill="90">
+        <div class="skill-info">
+          <span class="skill-name">AI Problem Solving</span>
+          <span class="skill-level">Native</span>
+        </div>
+        <div class="gauge-track"><div class="gauge-fill" style=""></div></div>
+        <div class="gauge-ticks"><span class="gauge-tick">0</span><span class="gauge-tick">25</span><span class="gauge-tick">50</span><span class="gauge-tick">75</span><span class="gauge-tick">100</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-header reveal">
+    <div class="section-kicker">03 — პროექტები</div>
+    <h2 class="section-title">სამი პოზიცია.<br>ერთი სტანდარტი.</h2>
+    <p class="section-desc">ყოველი პროექტი ასახავს ჩემი მიდგომის ამა თუ იმ ასპექტს: ლოგიკა, ეფექტურობა, საძირკველი.</p>
+  </div>
+
+  <div class="cards-grid reveal">
+
+    <div class="port-card">
+      <div class="port-num">01</div>
+      <div class="port-tag">Logic</div>
+      <h3>Dijkstra-ს ალგორითმი C++-ში</h3>
+      <p>
+        ლექტორმა მხოლოდ თეორიული ახსნა მისცა. სხვა სტუდენტებმა დამატებითი 
+        რესურსები მოძებნეს. მე — გრაფის ლოგიკა გავაანალიზე, 
+        პრიორიტეტის რიგი ავაწყვე და სრული იმპლემენტაცია C++-ში გავაკეთე 
+        ყოველგვარი „სახელმძღვანელოს" გარეშე.
+      </p>
+      <div class="port-tags">
+        <span class="tag">C++</span>
+        <span class="tag">Algorithms</span>
+        <span class="tag">Graph Theory</span>
+        <span class="tag">DSA</span>
+      </div>
+    </div>
+
+    <div class="port-card crimson-top">
+      <div class="port-num" style="color:rgba(232,23,61,0.08);">02</div>
+      <div class="port-tag">Efficiency</div>
+      <h3>ტესტირების ავტომატიზაცია — Java & Selenium</h3>
+      <p>
+        დედლაინი ახლოს, მასალა — ახალი. თეორიის გამეორების ნაცვლად, 
+        AI ინსტრუმენტები გამოვიყენე ინტელექტუალურად: 
+        სწრაფად ავაწყვე სრული ავტომატიზაციის პროექტი, 
+        Git-ით გავმართე, ლოგიკა გავწმინდე. 
+        შედეგი — ვერ შეამჩნევ, რომ ეს „ჩქარობის" პროდუქტია.
+      </p>
+      <div class="port-tags">
+        <span class="tag red">Java</span>
+        <span class="tag red">Selenium</span>
+        <span class="tag red">Git</span>
+        <span class="tag red">AI-Assisted</span>
+      </div>
+    </div>
+
+    <div class="port-card both-top">
+      <div class="port-num" style="color:rgba(255,255,255,0.04);">03</div>
+      <div class="port-tag" style="color:#8aa;">Foundation</div>
+      <h3>Hardware Build & Troubleshooting</h3>
+      <p>
+        5 წლის ასაკიდან ტელეფონებს ვაკეთებდი. პირველი კომპიუტერის ყიდვის 
+        შემდეგ — ყველაფერი თვითონ ვისწავლე. დღეს ვარ ის ადამიანი, 
+        ვის გამოც მეგობრები და ახლობლები არ ინერვიულებენ კომპიუტერის 
+        პრობლემებზე. ძვირადღირებულ ნაწილებთანაც ვმუშაობ — 
+        სიფრთხილე ჩემს სისტემაში ჩართულია.
+      </p>
+      <div class="port-tags">
+        <span class="tag">PC Building</span>
+        <span class="tag">Diagnostics</span>
+        <span class="tag">Hardware</span>
+        <span class="tag" style="background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); color:var(--text-dim);">High-End Parts</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DRIVE -->
+<section id="drive">
+  <div class="drive-bg"></div>
+  <div class="section-header reveal">
+    <div class="section-kicker" style="color:var(--crimson);">04 — ვნება</div>
+    <h2 class="section-title">სისრული<br><span style="color:var(--crimson);">სიჩქარეში.</span></h2>
+  </div>
+
+  <div class="drive-layout">
+    <div class="drive-content reveal">
+      <p>
+        ბავშვობიდან მანქანები ყველაზე დიდ ჩემს ოცნებას წარმოადგენდა. 
+        პირველი კითხვაზე — „რა გინდა გამოსულიყო?" — პასუხი ყოველთვის ერთი იყო: 
+        <strong style="color:#fff;">„მანქანის მტარებელი."</strong>
+      </p>
+      <p>
+        ბიძაჩემი იყო ის ადამიანი, ვისგანაც ყველაფერი ვიხილე — 
+        სიჩქარე, კონტროლი, სიმამაცე. 
+        ის ოცნება არ გასულა: ჩემი მიზანია საკუთარი drift მანქანა 
+        ჰყავდეს, ტურნირებში მონაწილეობდეს, 
+        თვითონ ასწყოს და უვლიდეს.
+      </p>
+      <p>
+        Drift-ი სიჩქარე არ არის — ეს <strong style="color:var(--crimson);">სიზუსტეა.</strong> 
+        ყოველი კუთხე გათვლილი, ყოველი კონტრ-რულევა — დროში სრულყოფილი. 
+        ზუსტად ეს ასოცირდება ჩემთვის პროგრამირებასთან.
+      </p>
+
+      <div class="drive-parallels">
+        <div class="parallel-item">
+          <span class="pi-icon">🏎️</span>
+          <span class="pi-text"><strong>დრიფტი:</strong> ფინიშამდე ზუსტად გათვლილი ტრაექტორია</span>
+        </div>
+        <div class="parallel-item">
+          <span class="pi-icon">💻</span>
+          <span class="pi-text"><strong>კოდი:</strong> ბოლო ტესტამდე ზუსტად გათვლილი ლოგიკა</span>
+        </div>
+        <div class="parallel-item">
+          <span class="pi-icon">🔧</span>
+          <span class="pi-text"><strong>ორივე:</strong> მხოლოდ სისტემის სრული გაგება იძლევა კონტროლს</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="drift-visual reveal">
+      <div class="drift-stat">
+        <div class="drift-stat-title">ოცნება</div>
+        <div class="drift-stat-val">საკუთარი Drift მანქანა</div>
+      </div>
+      <div class="drift-stat">
+        <div class="drift-stat-title">მიზანი</div>
+        <div class="drift-stat-val">ტურნირი — თვითონ ასწყობილი</div>
+      </div>
+      <div class="drift-stat">
+        <div class="drift-stat-title">ფილოსოფია</div>
+        <div class="drift-stat-val">სიზუსტე = სიჩქარე × კონტროლი</div>
+      </div>
+      <div class="drift-stat" style="background:linear-gradient(135deg, rgba(232,23,61,0.1), rgba(13,21,32,1)); border-color:rgba(232,23,61,0.2);">
+        <div class="drift-stat-title" style="color:var(--crimson);">ანალოგია</div>
+        <div class="drift-stat-val" style="font-size:1.1rem; line-height:1.5; color:var(--text);">
+          „ისე, როგორც drift-ში ყოველი კუთხე გათვლილია — 
+          ჩემი კოდიც ლოგიკაში სრულყოფილია."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-header reveal" style="text-align:center;">
+      <div class="section-kicker" style="justify-content:center;">05 — კონტაქტი</div>
+      <h2 class="section-title">მზად ვარ<br><span style="color:var(--blue);">სამუშაოდ.</span></h2>
+    </div>
+    <p class="reveal">
+      ვეძებ სტაჟირებას ან საწყის პოზიციას — IT მხარდაჭერა, 
+      პროგრამირება, ქსელები ან მონაცემთა ბაზები. 
+      ჩემ მიერ შეთავაზებული ყველაზე ძვირფასი რამ არ არის ჩამოთვლა — 
+      ეს არის ის, რომ 
+      <strong style="color:#fff;">ნებისმიერ ახალ საქმეს სისრულით ვაკეთებ და უფრო სწრაფად, ვიდრე ველოდებიხართ.</strong>
+    </p>
+    <div class="contact-links reveal">
+      <a href="tel:+995568487487" class="contact-link">
+        <span class="cl-icon">📱</span>
+        +995 568 487 487
+      </a>
+      <a href="mailto:xirdaevi77@gmail.com" class="contact-link">
+        <span class="cl-icon">✉️</span>
+        xirdaevi77@gmail.com
+      </a>
+      <a href="https://github.com/lukichaX" target="_blank" class="contact-link">
+        <span class="cl-icon">🐙</span>
+        github.com/lukichaX
+      </a>
+    </div>
+    <div class="footer-line reveal">
+      ლუკა ხირდაევი — IBSU კომპიუტერული მეცნიერება — 2025
+    </div>
+  </div>
+</section>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 5 + 'px';
+    cursor.style.top = my - 5 + 'px';
+  });
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) *.12;
+    ring.style.left = rx - 18 + 'px';
+    ring.style.top = ry - 18 + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2.5)';
+      ring.style.transform = 'scale(1.4)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.transform = 'scale(1)';
+    });
+  });
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Skill gauges
+        const rows = e.target.querySelectorAll('.skill-row');
+        rows.forEach((row, i) => {
+          const fill = row.querySelector('.gauge-fill');
+          const pct = row.getAttribute('data-fill') || '70';
+          setTimeout(() => { fill.style.width = pct + '%'; }, i * 120);
+        });
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(r => io.observe(r));
+
+  // Direct skill rows not inside .reveal
+  const skillSection = document.querySelector('#academic');
+  if (skillSection) {
+    const skillIo = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          document.querySelectorAll('.skill-row').forEach((row, i) => {
+            const fill = row.querySelector('.gauge-fill');
+            const pct = row.getAttribute('data-fill') || '70';
+            setTimeout(() => { fill.style.width = pct + '%'; }, 300 + i * 120);
+          });
+          skillIo.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    skillIo.observe(skillSection);
+  }
+
+  // GPA RING
+  const gpaArc = document.getElementById('gpaArc');
+  const arcIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const circumference = 2 * Math.PI * 100;
+        const gpa = 3.51 / 4.0;
+        const offset = circumference * (1 - gpa);
+        setTimeout(() => {
+          gpaArc.style.strokeDashoffset = offset;
+        }, 300);
+        arcIo.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  if (gpaArc) arcIo.observe(gpaArc);
+</script>
+</body>
+</html>
